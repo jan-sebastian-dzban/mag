@@ -16,7 +16,7 @@ SUPPORT_WEIGHTS = {
     'shinkai',
 }
 
-ASSET_HOST = 'https://github.com/ptran1203/pytorch-animeGAN/releases/download/v1.0'
+ASSET_HOST = 'https://github.com/jan-sebastian-dzban/mag/releases/download/v1.0.0'
 
 
 def read_image(path):
