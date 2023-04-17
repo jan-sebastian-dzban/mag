@@ -99,7 +99,7 @@ def save_samples(generator, loader, args,e, max_imgs=2, subname='gen'):
     fake_imgs = np.concatenate(fake_imgs, axis=0)
 
     for i, img in enumerate(fake_imgs):
-        save_path = os.path.join(args.save_image_dir, e ,f'{subname}_{i}.jpg')
+        save_path = os.path.join(args.save_image_dir, str(e) ,f'{subname}_{i}.jpg')
         cv2.imwrite(save_path, img[..., ::-1])
 
 
@@ -154,7 +154,7 @@ def main(args):
         print(f"Epoch {e}/{args.epochs}")
         bar = tqdm(data_loader)
         G.train()
-        os.makedirs( os.path.join(args.save_image_dir,e))
+        os.makedirs( os.path.join(args.save_image_dir, str(e) ))
         init_losses = []
 
         if e < args.init_epochs:
@@ -176,7 +176,7 @@ def main(args):
 
             set_lr(optimizer_g, args.lr_g)
             save_checkpoint(G, optimizer_g, e, args, posfix='_init')
-            save_samples(G, data_loader,e, args, subname='initg')
+            save_samples(G, data_loader, str(e) , args, subname='initg')
             continue
 
         loss_tracker.reset()
@@ -234,7 +234,7 @@ def main(args):
         if e % args.save_interval == 0:
             save_checkpoint(G, optimizer_g, e, args)
             save_checkpoint(D, optimizer_d, e, args)
-            save_samples(G, data_loader,e, args)
+            save_samples(G, data_loader, str(e) , args)
 
 
 if __name__ == '__main__':
