@@ -176,7 +176,7 @@ def main(args):
 
             set_lr(optimizer_g, args.lr_g)
             save_checkpoint(G, optimizer_g, e, args, posfix='_init')
-            save_samples(G, data_loader, str(e) , args, subname='initg')
+            save_samples(G, data_loader, e , args, subname='initg')
             continue
 
         loss_tracker.reset()
@@ -234,7 +234,7 @@ def main(args):
         if e % args.save_interval == 0:
             save_checkpoint(G, optimizer_g, e, args)
             save_checkpoint(D, optimizer_d, e, args)
-            save_samples(G, data_loader, str(e) , args)
+            save_samples(G, data_loader, e , args)
 
 
 if __name__ == '__main__':
