@@ -154,8 +154,11 @@ def main(args):
         print(f"Epoch {e}/{args.epochs}")
         bar = tqdm(data_loader)
         G.train()
-        os.makedirs( os.path.join(args.save_image_dir, str(e) ))
+
         init_losses = []
+        if not os.path.exists(os.path.join(args.save_image_dir, str(e) )):
+            print(f'* {os.path.join(args.save_image_dir, str(e)) } does not exist, creating...')
+            os.makedirs( os.path.join(args.save_image_dir, str(e) ))
 
         if e < args.init_epochs:
             # Train with content loss only
@@ -176,7 +179,7 @@ def main(args):
 
             set_lr(optimizer_g, args.lr_g)
             save_checkpoint(G, optimizer_g, e, args, posfix='_init')
-            save_samples(G, data_loader, e , args, subname='initg')
+            save_samples(G, data_loader, args, e, subname='initg')
             continue
 
         loss_tracker.reset()
@@ -234,7 +237,7 @@ def main(args):
         if e % args.save_interval == 0:
             save_checkpoint(G, optimizer_g, e, args)
             save_checkpoint(D, optimizer_d, e, args)
-            save_samples(G, data_loader, e , args)
+            save_samples(G, data_loader, args, e)
 
 
 if __name__ == '__main__':
