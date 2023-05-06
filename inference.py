@@ -21,6 +21,7 @@ VALID_FORMATS = {
 
 class Transformer:
     def __init__(self, weight='hayao', add_mean=False):
+        print(weight)
         self.G = Generator()
 
         if cuda_available:
@@ -80,11 +81,15 @@ class Transformer:
         for fname in tqdm(files):
             image = cv2.imread(os.path.join(img_dir, fname))[:,:,::-1]
             image = resize_image(image)
+            image1 = cv2.imread(os.path.join(img_dir, fname))
+            image1 = resize_image(image1)
             anime_img = self.transform(image)[0]
             ext = fname.split('.')[-1]
             fname = fname.replace(f'.{ext}', '')
             anime_img = denormalize_input(anime_img, dtype=np.int16)
-            cv2.imwrite(os.path.join(dest_dir, f'{fname}_anime.jpg'), anime_img[..., ::-1])
+            vis = np.concatenate((image1, anime_img[..., ::-1]), axis=1)
+            cv2.imwrite(os.path.join(dest_dir,'two', f'{fname}_two.jpg'),vis)
+            cv2.imwrite(os.path.join(dest_dir, 'anime',f'{fname}_anime.jpg'), anime_img[..., ::-1])
 
     def transform_video(self, input_path, output_path, batch_size=4, start=0, end=0):
         '''
